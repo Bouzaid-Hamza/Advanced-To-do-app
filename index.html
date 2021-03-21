@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="todo-container">
+      <div class="todo-lists">
+        <h3 class="lists-header">My lists :</h3>
+        <ul class="created-lists"></ul>
+        <div class="add-list">
+          <input
+            class="type-list-name"
+            type="text"
+            placeholder="Type list name"
+          />
+          <button class="add-list-btn">+</button>
+        </div>
+      </div>
+
+      <div class="todo-tasks">
+        <h2 class="tasks-header"></h2>
+        <div class="tasks-body">
+          <ul class="created-tasks"></ul>
+          <div class="add-task">
+            <input
+              class="type-task-name"
+              type="text"
+              placeholder="Type task name"
+            />
+            <button class="add-task-btn">+</button>
+          </div>
+          <span class="remaining-tasks"
+            ><span class="remaining-tasks-nbr">0</span> tasks remaining</span
+          >
+          <div class="clear-section">
+            <button class="clear-completed-tasks">Clear completed tasks</button>
+            <button class="delete-list">Delete list</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/scripts.js"></script>
+  </body>
+</html>
