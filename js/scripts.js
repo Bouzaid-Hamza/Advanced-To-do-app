@@ -7,17 +7,17 @@ try {
     document.querySelector(".created-lists").innerHTML += listItem.listElement;
   });
 } catch(exp) {
-  todoList = new Array();
+  todoList = [];
 }
 
 /* ========= UPDATE LOCAL STORAGE ========= */
-updateLocalStorage = () => {
+const updateLocalStorage = () => {
   window.localStorage.setItem("todoList", JSON.stringify(todoList));
-}
+};
 
 /* ========= ADD NEW LIST ========= */
-addNewList = (listName = "") => {
-  let promise = new Promise((resolve, reject) => {
+const addNewList = (listName = "") => {
+  let promise = new Promise(() => {
     if(listName) {
       let listId = new Date().getTime().toString();
       let list = document.createElement("li");
@@ -31,28 +31,29 @@ addNewList = (listName = "") => {
         listElement: list.outerHTML,
         tasks: [],
         checkedTasks: []
-      }
+      };
       todoList.push(listObj);
       setActiveList(document.querySelector(".list:last-child"), todoList.length-1);
       updateLocalStorage();
-      resolve ("New list successfully added");
-    } else {
-      reject ("Please enter a name for the list");
-    }
+      //resolve ("New list successfully added");
+    } 
+    // else {
+    //   reject ("Please enter a name for the list");
+    // }
   });
   return promise;
-}
+};
 
 document.querySelector(".add-list-btn").onclick = () => {
   let inputList = document.querySelector(".type-list-name");
-  addNewList(inputList.value).then(result => {
+  addNewList(inputList.value).then(() => {
     initActiveList();
   });
   inputList.value = "";
-}
+};
 
 /* ========= ACTIVE LIST FUNCTION ========= */
-setActiveList = (listItem, listIndex) => {
+const setActiveList = (listItem, listIndex) => {
   document.querySelector(".tasks-body").style.display = "block";
   document.querySelectorAll(".list").forEach((item) => {
     item.classList.remove("active-list");
@@ -69,16 +70,16 @@ setActiveList = (listItem, listIndex) => {
   updateRemainingTasks();
   clearCompletedTasks();
   editTask();
-}
+};
 
 /* ========= SET ACTIVE LIST ON CLICK ========= */
-initActiveList = () => {
+const initActiveList = () => {
   document.querySelectorAll(".list").forEach((listItem, listIndex) => {
     listItem.onclick = () => { 
       setActiveList(listItem, listIndex);
       toggleCheck();
-    }
-  })
+    };
+  });
 };
 
 /* ========= SET THE FIRST LIST AS ACTIVE WHEN THE PAGE LOADS ========= */
@@ -91,10 +92,10 @@ window.onload = () => {
   initActiveList();
   toggleCheck();
   editTask();
-}
+};
 
 /* ========= ADD NEW TASK ========= */
-addNewTask = (taskName = "") => {
+const addNewTask = (taskName = "") => {
   if(taskName) {
     let i = new Date().getTime();
     let task = document.createElement("li");
@@ -133,17 +134,17 @@ addNewTask = (taskName = "") => {
     updateLocalStorage();
     editTask();
   }
-}
+};
 
 document.querySelector(".add-task-btn").onclick = () => {
   let inputTask = document.querySelector(".type-task-name");
   addNewTask(inputTask.value);
   if(inputTask.value) {toggleCheck();}
   inputTask.value = "";
-}
+};
 
 /* ========= CHANGING THE NAMES ========= */
-editTask = () => {
+const editTask = () => {
   document.querySelectorAll(".edit-task-btn").forEach((editBtn, editIndex) => {
     editBtn.onclick = () => {
       let IndexOfActiveList = todoList.findIndex(item => {
@@ -166,54 +167,49 @@ editTask = () => {
       input.addEventListener("keyup", (event) => {
         if (event.key === "Enter") {
           event.preventDefault();
-          if(input.value) {
-            let line = '<div class="line-through-completed"></div>';
-            taskName.innerHTML = input.value + line;
-            todoList[IndexOfActiveList].tasks[editIndex].taskName = input.value;
-            todoList[IndexOfActiveList].tasks[editIndex].taskElement = taskName.parentElement.outerHTML;
-            updateLocalStorage();
-          } else {
-            taskName.innerHTML = prevTaskText + line;
-          }
-          lineThroughCompleted(document.querySelectorAll(".task-checkbox input")[editIndex], editIndex); 
+          updateTaskText(IndexOfActiveList, prevTaskText, taskName, editIndex, input);
         }
       });
       document.body.onclick = () => {
         if (document.activeElement != input) {
-          if(input.value) {
-            let line = '<div class="line-through-completed"></div>';
-            taskName.innerHTML = input.value + line;
-            todoList[IndexOfActiveList].tasks[editIndex].taskName = input.value;
-            todoList[IndexOfActiveList].tasks[editIndex].taskElement = taskName.parentElement.outerHTML;
-            updateLocalStorage();
-          } else {
-            taskName.innerHTML = prevTaskText + line;
-          } 
-          lineThroughCompleted(document.querySelectorAll(".task-checkbox input")[editIndex], editIndex);  
+          updateTaskText(IndexOfActiveList, prevTaskText, taskName, editIndex, input);
         } 
-      }
-    }
+      };
+    };
   });
+};
+
+const updateTaskText = (IndexOfActiveList, prevTaskText, taskName, taskIndex, input) => {
+  let line = '<div class="line-through-completed"></div>';
+  if(input.value) {
+    taskName.innerHTML = input.value + line;
+    todoList[IndexOfActiveList].tasks[taskIndex].taskName = input.value;
+    todoList[IndexOfActiveList].tasks[taskIndex].taskElement = taskName.parentElement.outerHTML;
+    updateLocalStorage();
+  } else {
+    taskName.innerHTML = prevTaskText + line;
+  } 
+  lineThroughCompleted(document.querySelectorAll(".task-checkbox input")[taskIndex], taskIndex);  
 }
 
 /* ========= CALCULATION OF REMAINING TASKS ========= */
-calcRemainingTasks = () => {
+const calcRemainingTasks = () => {
   let tasksCheckboxes = document.querySelectorAll(".task-checkbox input:not(:checked)");
   document.querySelector(".remaining-tasks-nbr").innerHTML = tasksCheckboxes.length;
-}
+};
 
-updateRemainingTasks = () => {
+const updateRemainingTasks = () => {
   document.querySelectorAll(".task-checkbox input").forEach(taskCheckbox => {
     taskCheckbox.onchange = () => {
       calcRemainingTasks();
       updateCheckedTasks();
-    }
+    };
   });
-}
+};
 
 /* ========= SAVING INDEXES OF THE CHECKED TASKS ========= */
-updateCheckedTasks = () => {
-  let indexesOfCheckedTasks = new Array();
+const updateCheckedTasks = () => {
+  let indexesOfCheckedTasks = [];
   document.querySelectorAll(".task-checkbox input").forEach((taskCheckbox, taskIndex) => {
     if(taskCheckbox.checked) {
       indexesOfCheckedTasks.push(taskIndex);
@@ -224,10 +220,10 @@ updateCheckedTasks = () => {
   });
   todoList[currentListIndex].checkedTasks = indexesOfCheckedTasks;
   updateLocalStorage();
-}
+};
 
 /* ========= TOGGLE CHECK WHEN CLICKING NAME ========= */
-toggleCheck = () => {
+const toggleCheck = () => {
   document.querySelectorAll(".task-name").forEach((taskName, taskIndex) => {
     let taskCheckbox = document.querySelectorAll(".task-checkbox input")[taskIndex];
     taskName.onclick = () => {
@@ -237,20 +233,20 @@ toggleCheck = () => {
         calcRemainingTasks();
         updateCheckedTasks();
       }
-    }
+    };
     document.querySelectorAll(".task-checkbox input")[taskIndex].onchange = () => {
       if(taskName.firstElementChild.tagName !== "INPUT") {
         lineThroughCompleted(taskCheckbox, taskIndex);
         calcRemainingTasks();
         updateCheckedTasks();
       }
-    }
+    };
     lineThroughCompleted(taskCheckbox, taskIndex);
   });
-}
+};
 
 /* ========= ANIMATION ON COMPLETED TASKS ========= */
-lineThroughCompleted = (taskCheckbox, taskIndex) => {
+const lineThroughCompleted = (taskCheckbox, taskIndex) => {
   if(taskCheckbox.checked) {
     document.querySelectorAll(".line-through-completed")[taskIndex].style.width = "100%";
     document.querySelectorAll(".task-name")[taskIndex].style.opacity = "0.5";
@@ -258,10 +254,10 @@ lineThroughCompleted = (taskCheckbox, taskIndex) => {
     document.querySelectorAll(".line-through-completed")[taskIndex].style.width = "0";
     document.querySelectorAll(".task-name")[taskIndex].style.opacity = "1";
   }
-}
+};
 
 /* ========= CLEAR COMPLETED TASKS ========= */
-clearCompletedTasks = () => {
+const clearCompletedTasks = () => {
   document.querySelector(".clear-completed-tasks").onclick = () => {
     let currentListIndex = todoList.findIndex(listItem => {
       return listItem.listId == document.querySelector(".todo-tasks").getAttribute("name");
@@ -271,11 +267,11 @@ clearCompletedTasks = () => {
       document.querySelectorAll(".task")[indexesToRemove[i]].remove();
       todoList[currentListIndex].tasks.splice(indexesToRemove[i], 1);
     } 
-    todoList[currentListIndex].checkedTasks = new Array();
+    todoList[currentListIndex].checkedTasks = [];
     toggleCheck();
     updateLocalStorage();
-  }
-}
+  };
+};
 
 /* ========= DELETE LIST ========= */
 document.querySelector(".delete-list").onclick = () => {
@@ -298,10 +294,10 @@ document.querySelector(".delete-list").onclick = () => {
     initActiveList();
     updateLocalStorage();
   }
-}
+};
 
 /* ========= NO LIST EXIST ========= */
-nothingToDo = () => {
-  document.querySelector(".tasks-header").innerHTML = "Something in mind ?"
+const nothingToDo = () => {
+  document.querySelector(".tasks-header").innerHTML = "Something in mind ?";
   document.querySelector(".tasks-body").style.display = "none";
-}
+};
