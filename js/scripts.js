@@ -65,7 +65,9 @@ const setActiveList = (listItem, listIndex) => {
   todoList[listIndex].tasks.forEach(taskItem => {
     document.querySelector(".created-tasks").innerHTML += taskItem.taskElement;
   });
-  todoList[listIndex].checkedTasks.forEach(index => document.querySelectorAll(".task-checkbox input")[index].checked = true);
+  todoList[listIndex].checkedTasks.forEach(index => {
+    document.querySelectorAll(".task-checkbox input")[index].checked = true;
+  });
   calcRemainingTasks();
   updateRemainingTasks();
   clearCompletedTasks();
@@ -180,14 +182,20 @@ const editTask = () => {
 };
 
 const updateTaskText = (IndexOfActiveList, prevTaskText, taskName, taskIndex, input) => {
-  let line = '<div class="line-through-completed"></div>';
+  // let line = '<div class="line-through-completed"></div>';
+  let line = document.createElement("div");
+  line.setAttribute("class", "line-through-completed");
   if(input.value) {
-    taskName.innerHTML = input.value + line;
+    // taskName.innerHTML = input.value + line.toString();
+    taskName.innerHTML = "";
+    taskName.append(document.createTextNode(input.value), line);
     todoList[IndexOfActiveList].tasks[taskIndex].taskName = input.value;
     todoList[IndexOfActiveList].tasks[taskIndex].taskElement = taskName.parentElement.outerHTML;
     updateLocalStorage();
   } else {
-    taskName.innerHTML = prevTaskText + line;
+    // taskName.innerHTML = prevTaskText + line.toString();
+    taskName.innerHTML = "";
+    taskName.append(document.createTextNode(prevTaskText), line);
   } 
   lineThroughCompleted(document.querySelectorAll(".task-checkbox input")[taskIndex], taskIndex);  
 }
