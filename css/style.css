@@ -37,6 +37,13 @@ button {
   opacity: 0.5;
 }
 
+.disabled,
+.disabled:hover {
+  opacity: 0.5;
+  background-color: #eee !important;
+  cursor: default !important;
+}
+
 .todo-container {
   display: flex;
   margin: 150px;
@@ -54,7 +61,7 @@ button {
 
 .list {
   margin: 8px 0;
-  cursor: pointer;
+  cursor: default;
   padding: 5px 15px;
   border-radius: 2px;
   font-weight: 300;
@@ -67,11 +74,11 @@ button {
 
 .active-list,
 .active-list:hover {
-  background-color: rgb(93, 142, 214);
+  background-color: rgba(82, 116, 167, 0.589);
   font-weight: bold;
 }
 
-.add-list {
+form {
   display: flex;
   align-items: flex-end;
 }
@@ -82,6 +89,7 @@ button {
   border-bottom: 1px solid;
   outline: none;
   padding-bottom: 4px;
+  min-width: 250px;
 }
 
 .add-list-btn {
@@ -112,10 +120,6 @@ button {
   background-color: rgb(76, 58, 158);
 }
 
-.tasks-body {
-  display: none;
-}
-
 .task {
   list-style-type: none;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -124,14 +128,40 @@ button {
 }
 
 .task-name {
-  margin-left: 10px;
   position: relative;
-  cursor: pointer;
-  position: relative;
-  display: inline-block;
 }
 
-.line-through-completed {
+.task-name::after {
+  content: "";
+  width: 100%;
+  height: 2px;
+  display: inline-block;
+  background-color: rgb(76, 58, 158);
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: scaleX(0);
+  transition: transform 300ms;
+  transform-origin: right;
+}
+
+.task input:checked + label .task-name::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.task input:checked + label .task-name {
+  opacity: 0.4;
+}
+
+/* .task-name {
+  margin-left: 10px;
+  position: relative;
+  cursor: default;
+  display: inline-block;
+} */
+
+/* .line-through-completed {
   width: 0;
   background-color: rgb(76, 58, 158);
   height: 2px;
@@ -139,7 +169,7 @@ button {
   bottom: 50%;
   transform: translateY(50%);
   transition: width 0.2s linear;
-}
+} */
 
 .edit-task-btn {
   border: none;
@@ -149,6 +179,13 @@ button {
   color: rgb(175, 180, 247);
   position: absolute;
   right: 0;
+}
+
+.edit-task-btn[disabled],
+.edit-task-btn[disabled]:hover {
+  background-color: rgba(76, 58, 158, 0.26);
+  color: rgba(175, 180, 247, 0.466);
+  cursor: default;
 }
 
 .edit-task-btn:hover {
@@ -210,38 +247,54 @@ button {
 
 /*========= CUSTOM CHECKBOX ==========*/
 
-.label-checkbox {
-  background-color: white;
-  width: 16px;
-  height: 16px;
+.custom-checkbox {
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
-  display: inline-flex;
+  background-color: white;
+  border: 2px solid rgb(176, 176, 252);
+  display: inline-block;
   position: relative;
+  transform: scale(1);
+  transition: transform 300ms;
   top: 3px;
-  cursor: pointer;
+  margin-right: 6px;
 }
 
-.label-checkbox:hover {
-  background-color: rgb(139, 218, 255);
+.custom-checkbox:hover {
+  transform: scale(1.1);
 }
 
-.label-checkbox::after {
+.custom-checkbox::after {
   content: "";
   border: rgb(76, 76, 192) solid;
   position: absolute;
-  top: 26.4%;
-  left: 22.4%;
+  top: 23.4%;
+  left: 15.3%;
   border-width: 0 0 2px 2px;
   width: 8px;
   height: 4px;
-  display: none;
+  opacity: 0;
   transform: rotate(-45deg);
+  transition: opacity 300ms ease-in-out;
 }
 
-.custom-checkbox input:checked ~ .label-checkbox {
-  background-color: rgb(56, 247, 221);
+.new-checkbox {
+  position: relative;
 }
 
-.custom-checkbox input:checked ~ .label-checkbox::after {
-  display: block;
+.new-checkbox input {
+  position: absolute;
+  top: 6px;
+  left: 2px;
+  opacity: 0;
+}
+
+.new-checkbox input:checked ~ label .custom-checkbox {
+  border-color: rgb(188, 236, 248);
+  background-color: rgb(188, 236, 248);
+}
+
+.new-checkbox input:checked ~ label .custom-checkbox::after {
+  opacity: 1;
 }

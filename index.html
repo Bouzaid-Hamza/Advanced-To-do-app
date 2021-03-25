@@ -6,45 +6,64 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <link rel="stylesheet" href="css/style.css" />
+    <script defer src="js/improvedScripts.js"></script>
   </head>
   <body>
     <div class="todo-container">
       <div class="todo-lists">
         <h3 class="lists-header">My lists :</h3>
-        <ul class="created-lists"></ul>
+        <ul class="created-lists" data-lists></ul>
         <div class="add-list">
-          <input
-            class="type-list-name"
-            type="text"
-            placeholder="Type list name"
-          />
-          <button class="add-list-btn">+</button>
+          <form action="" data-new-list-from>
+            <input
+              class="type-list-name"
+              type="text"
+              placeholder="Type list name"
+              data-input-new-list
+            />
+            <button class="add-list-btn">+</button>
+          </form>
         </div>
       </div>
 
       <div class="todo-tasks">
-        <h2 class="tasks-header"></h2>
-        <div class="tasks-body">
-          <ul class="created-tasks"></ul>
+        <h2 class="tasks-header" data-tasks-header></h2>
+        <div class="tasks-body" data-tasks-body>
+          <ul class="created-tasks" data-tasks></ul>
           <div class="add-task">
-            <input
-              class="type-task-name"
-              type="text"
-              placeholder="Type task name"
-            />
-            <button class="add-task-btn">+</button>
+            <form action="" data-new-task-from>
+              <input
+                class="type-task-name"
+                type="text"
+                placeholder="Type Task name"
+                data-input-new-task
+              />
+              <button class="add-task-btn">+</button>
+            </form>
           </div>
           <span class="remaining-tasks"
-            ><span class="remaining-tasks-nbr">0</span> tasks remaining</span
+            ><span class="remaining-tasks-nbr">0 tasks</span> remaining</span
           >
           <div class="clear-section">
             <button class="clear-completed-tasks">Clear completed tasks</button>
-            <button class="delete-list">Delete list</button>
+            <button class="delete-list" data-delete-list>Delete list</button>
           </div>
         </div>
       </div>
     </div>
 
-    <script src="js/scripts.js"></script>
+    <template id="task-templte">
+      <li class="task">
+        <div class="new-checkbox">
+          <input type="checkbox" />
+          <label>
+            <span class="custom-checkbox"></span>
+            <span class="task-name"></span>
+          </label>
+        </div>
+      </li>
+    </template>
+
+    <!-- <script src="js/scripts.js"></script> -->
   </body>
 </html>
