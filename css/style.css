@@ -37,6 +37,11 @@ button {
   opacity: 0.5;
 }
 
+.warning-msg::placeholder {
+  color: rgb(255, 151, 151);
+  opacity: 1;
+}
+
 .disabled,
 .disabled:hover {
   opacity: 0.5;
@@ -115,6 +120,10 @@ form {
   padding: 10px 20px;
 }
 
+.tasks-body {
+  display: none;
+}
+
 .tasks-header {
   padding: 10px 20px;
   background-color: rgb(76, 58, 158);
@@ -125,6 +134,10 @@ form {
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   padding: 10px 0;
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 30px;
 }
 
 .task-name {
@@ -154,23 +167,6 @@ form {
   opacity: 0.4;
 }
 
-/* .task-name {
-  margin-left: 10px;
-  position: relative;
-  cursor: default;
-  display: inline-block;
-} */
-
-/* .line-through-completed {
-  width: 0;
-  background-color: rgb(76, 58, 158);
-  height: 2px;
-  position: absolute;
-  bottom: 50%;
-  transform: translateY(50%);
-  transition: width 0.2s linear;
-} */
-
 .edit-task-btn {
   border: none;
   background-color: rgba(76, 58, 158, 0.575);
@@ -178,6 +174,7 @@ form {
   border-radius: 3px;
   color: rgb(175, 180, 247);
   position: absolute;
+  top: 20%;
   right: 0;
 }
 
@@ -193,11 +190,6 @@ form {
   transition: background-color 0.3s ease-in-out;
 }
 
-.change-task-name {
-  background-color: transparent;
-  border: none;
-}
-
 .add-task {
   display: flex;
   align-items: flex-end;
@@ -208,10 +200,18 @@ form {
   background-color: transparent;
   border: none;
   border-bottom: 1px solid;
-  outline: none;
   padding-bottom: 4px;
-  width: 200px;
-  font-size: 16px;
+  min-width: 265px;
+  font-size: 14px;
+}
+
+.task .type-task-name {
+  padding: 2px;
+  border: none;
+  top: 20%;
+  position: absolute;
+  left: 0;
+  display: none;
 }
 
 .add-task-btn {
