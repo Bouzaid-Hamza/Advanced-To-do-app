@@ -69,7 +69,6 @@ function renderTasks () {
   tasksContainer.innerHTML = '';
   if (selectedListId) {
     tasksBody.style.display = 'block';
-    // const selectedList = todoList.find(list => list.id === selectedListId);
     tasksHeader.innerText = selectedList.name;
     selectedList.tasks.forEach(task => {
       const taskElement = document.importNode(taskTemplate.content, true);
@@ -83,7 +82,7 @@ function renderTasks () {
     });
   } else {
     tasksBody.style.display = '';
-    tasksHeader.innerText = 'NO LIST IS SELECTED';
+    tasksHeader.innerText = 'NOTHING FOR THE MOMENT';
   }
 }
 
@@ -93,7 +92,6 @@ renderTasks();
 newTaskForm.addEventListener('submit', e => {
   e.preventDefault();
   if (!inputNewTask.value) return;
-  // todoList.find(list => list.id === selectedListId).tasks.push({ id: Date.now().toString(), name: inputNewTask.value, complete: false });
   selectedList.tasks.push({ id: Date.now().toString(), name: inputNewTask.value, complete: false });
   inputNewTask.value = null;
   saveChanges();
@@ -103,7 +101,6 @@ newTaskForm.addEventListener('submit', e => {
 
 /* ========= SETING COMPLETED TASKS ========= */
 tasksContainer.addEventListener('click', e => {
-  // const selectedList = todoList.find(list => list.id === selectedListId);
   if (e.target.getAttribute('type') === 'checkbox') {
     const selectedTask = selectedList.tasks.find(task => task.id === e.target.id);
     selectedTask.complete = e.target.checked;
@@ -130,15 +127,18 @@ function upDateTaskForm (id, task) {
       saveChanges();
       renderTasks();
     } else {
-      editTaskInput.placeholder = 'Please anter a name';
+      editTaskInput.placeholder = 'Please enter a name';
       editTaskInput.classList.add('warning-msg');
+      window.setTimeout(() => {
+        editTaskInput.placeholder = 'Change name';
+        editTaskInput.classList.remove('warning-msg');
+      }, 3000);
     }
   });
 }
 
 /* ========= CLEARING COMPLETED TASKS ========= */
 clearCompletedTasksBtn.addEventListener('click', () => {
-  // const selectedList = todoList.find(list => list.id === selectedListId);
   selectedList.tasks = selectedList.tasks.filter(task => !task.complete);
   saveChanges();
   renderTasks();
@@ -147,7 +147,6 @@ clearCompletedTasksBtn.addEventListener('click', () => {
 
 /* ========= CALCULATING REMAINING TASKS ========= */
 function renderRemainingTasks () {
-  // const selectedList = todoList.find(list => list.id === selectedListId);
   if (!selectedListId) return;
   const nbr = selectedList.tasks.filter(task => !task.complete).length;
   const text = nbr === 1 ? 'task' : 'tasks';
