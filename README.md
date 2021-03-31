@@ -1,2 +1,2 @@
 
-# Todo List App using HTML CSS & JavaScript
+# Advanced Todo List App using HTML CSS & JavaScript
